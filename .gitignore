@@ -1,0 +1,66 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+node_modules/
+
+src/main/frontend/node_modules/
+# Local env files (should NOT be committed)
+.env
+.env.*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vite cache and dev server data
+.vite
+.vite/*
+
+# Build/test artifacts
+coverage/
+.nyc_output/
+*.lcov
+
+# npm / tooling caches
+.cache
+.pnp.*
+.lock-wscript
+
+# eslint / vite caches
+.eslintcache
+vite-env.d.ts
+
+# mac/windows/git metadata already handled above; add optional OS/temp
+Thumbs.db
+ehthumbs.db
