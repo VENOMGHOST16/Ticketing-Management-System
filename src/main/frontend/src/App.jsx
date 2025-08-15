@@ -11,7 +11,7 @@ function App() {
       await fetch('/api/count', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ count: newCount }),
+        body: JSON.stringify({ count: `Sarvottam Pressed Count and Current count is ${newCount}` }),
       })
     } catch (err) {
       console.error('Failed to send count', err)

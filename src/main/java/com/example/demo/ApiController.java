@@ -15,8 +15,8 @@ public class ApiController {
     }
 
     @PostMapping("/api/count")
-    public void receiveCount(@RequestBody Map<String, Integer> body) {
-        Integer count = body != null ? body.get("count") : null;
+    public void receiveCount(@RequestBody Map<String, String> body) {
+        String count = body != null ? body.get("count") : null;
         System.out.println("Received count: " + count);
     }
 }
