@@ -1,54 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./Login";
 
-function App() {
-  const [count, setCount] = useState(0)
+// User components
+import UserNavbar from "./components/navbars/UserNavbar";
+import RaiseTicket from "./pages/User/RaiseTicket";
+import Profile from "./pages/User/Profile";
 
-  const sendCount = async (newCount) => {
-    try {
-      await fetch('/api/count', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ count: `Sarvottam Pressed Count and Current count is ${newCount}` }),
-      })
-    } catch (err) {
-      console.error('Failed to send count', err)
-    }
-  }
+// Admin components
+import AdminNavbar from "./components/navbars/AdminNavbar";
+import Dashboard from "./pages/Admin/Dashboard";
+import AllTickets from "./pages/Admin/AllTickets";
+import AdminAllUsers from "./pages/Admin/AdminAllUsers";
+import AdminAddUser from "./pages/Admin/AddUser";
 
-  const handleClick = () => {
-    const next = count + 1
-    setCount(next)
-    // call fetch after computing the new value (outside updater)
-    sendCount(next)
-  }
+export default function App() {
+  const [user, setUser] = useState(null);
+
+  const handleLogin = (userData) => {
+    if (userData?.success) setUser(userData);
+  };
+
+  const handleLogout = () => setUser(null);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={handleClick}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Router>
+      {!user ? (
+        // If no user -> always show Login
+        <Routes>
+          <Route path="*" element={<Login onLogin={handleLogin} />} />
+        </Routes>
+      ) : (
+        <>
+          {/* Navbar */}
+          {user.roles === "ROLE_USER" && (
+            <UserNavbar
+              username={user.email?.split("@")[0] || "User"}
+              onLogout={handleLogout}
+            />
+          )}
+          {user.roles === "ROLE_ADMIN" && (
+            <AdminNavbar
+              adminName={user.email?.split("@")[0] || "Admin"}
+              onLogout={handleLogout}
+            />
+          )}
 
-export default App
+          {/* Content with padding below navbar */}
+          <div className="pt-16 p-4">
+            <Routes>
+              {/* User Routes */}
+              {user.roles === "ROLE_USER" && (
+                <>
+                  <Route path="/" element={<Navigate to="/profile" replace />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/raise-ticket" element={<RaiseTicket />} />
+                </>
+              )}
+
+              {/* Admin Routes */}
+              {user.roles === "ROLE_ADMIN" && (
+                <>
+                  <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+                  <Route path="/admin/dashboard" element={<Dashboard />} />
+                  <Route path="/admin/tickets" element={<AllTickets />} />
+                  <Route path="/admin/users" element={<AdminAllUsers />} />
+                  <Route path="/admin/adduser" element={<AdminAddUser />} />
+                </>
+              )}
+
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
+        </>
+      )}
+    </Router>
+  );
+}
