@@ -1,6 +1,6 @@
 # 🎫 Ticketing Management System  
 
-🌐 **Live Demo:** [Frontend on Netlify]([[https://your-frontend-link.netlify.app](https://effervescent-alfajores-e6cec1.netlify.app)])  
+🌐 **Live Demo:** [Frontend on Netlify](https://your-frontend-link.netlify.app)  
 
 ---
 
